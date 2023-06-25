@@ -7,12 +7,13 @@ authors:
 targets:
   test2:
     main: src/test2.cr
-crystal: 1.0.0
 
 dependencies:
   jennifer:
     github: imdrasil/jennifer.cr
     version: 0.13.0
+  pg:
+    github: will/crystal-pg
   kemal:
     github: kemalcr/kemal
   sam:

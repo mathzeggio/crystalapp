@@ -1,21 +1,21 @@
-version: "3.9"
+version: "3.3"
+
 services:
-  db:
-    image: postgres
+  postgres:
+    image: ubuntu/postgres:14-22.04_beta
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=postgres
-
+      - POSTGRES_USER=postgres
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    depends_on:
-      - db
     ports:
       - "3000:3000"
     volumes:
       - .:/app
+    depends_on:
+      - postgres
+    command: bash -c "crystal sam.cr db:migrate && crystal run src/app.cr"
