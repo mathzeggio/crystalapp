@@ -1,0 +1,22 @@
+name: test2
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+targets:
+  test2:
+    main: src/test2.cr
+crystal: 1.0.0
+
+dependencies:
+  jennifer:
+    github: imdrasil/jennifer.cr
+    version: 0.13.0
+  kemal:
+    github: kemalcr/kemal
+  sam:
+    github: imdrasil/sam.cr
+    version: 0.4.2
+    
+license: MIT
