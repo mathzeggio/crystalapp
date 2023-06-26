@@ -202,6 +202,31 @@ Example response:
 }
 ```
 
+## **Append new travel stops**
+- **URL**: /travel-plans/:id/append
+- **Method**: POST
+- **Headers**:
+- **Content-Type**: application/json
+- **Body**: An array of ints containing new travel stops.
+
+This endpoint allows you to add new travel stops of a specific travel plan based on the provided ID. Send an object with the travel_stops property containing the new array of location IDs.
+Example URL: **/travel-plans/2/append**
+
+**Example request:**
+```json
+{
+    "travel_stops": [4, 9, 6]
+}
+```
+Example response:
+
+```json
+{
+    "id": 4,
+    "travel_stops": [1, 2, 3, 4, 9, 6]
+}
+```
+
 ## **Delete Travel Plan**
 - **URL**: /travel-plans/:id
 - **Method**: DELETE
