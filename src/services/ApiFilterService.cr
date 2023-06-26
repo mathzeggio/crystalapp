@@ -1,6 +1,6 @@
-require "./Location"
+require "../models/Location"
 
-class ResponseData
+class ApiFilterService
   property locationsByIds : Array(Location)
 
   def initialize(@locationsByIds : Array(Location) = [] of Location)
@@ -11,7 +11,7 @@ class ResponseData
     new(locations)
   end
 
-  def self.get_data(response_data : ResponseData, expand : Bool, optimize : Bool)
+  def self.get_data(response_data : ApiFilterService, expand : Bool, optimize : Bool)
     dataArray = response_data.locationsByIds.map { |location| Location.get_data(location)}
     if optimize
       optimizedArray = self.optimize_filters(dataArray)

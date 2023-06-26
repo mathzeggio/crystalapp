@@ -1,8 +1,8 @@
 require "http/client"
-require "../models/*"
+require "./*"
 require "json"
 
-class RickNMortyApiService
+class QueryService
 
     def initialize()
         @url = "https://rickandmortyapi.com/graphql"
@@ -13,9 +13,9 @@ class RickNMortyApiService
     def get_data(ids : Array(Int32), expand : Bool, optimize : Bool)
         query = "{\"query\":\"query GetAll {\\n  locationsByIds(ids: #{ids}) {\\n    id\\n    name\\n    dimension\\n  type\\n   residents {\\n      id\\n      episode {\\n        id\\n      }\\n    }\\n  }\\n}\\n\\n\"}"
         response = HTTP::Client.post(@url, headers: @headers, body: query)
-        data = ResponseData.from_json(JSON.parse(response.body))
+        data = ApiFilterService.from_json(JSON.parse(response.body))
         if data
-            ResponseData.get_data(data, expand, optimize)
+            ApiFilterService.get_data(data, expand, optimize)
         else
           "Erro na requisição"
         end

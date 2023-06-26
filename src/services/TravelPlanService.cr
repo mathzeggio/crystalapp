@@ -4,7 +4,7 @@ require "../models/*"
 
 class TravelPlanService
     def initialize()
-        @api_service = RickNMortyApiService.new
+        @api_service = QueryService.new
     end
 
     def create_travel(stops : Array(Int32))
@@ -14,16 +14,17 @@ class TravelPlanService
     end
 
     def get_travel(id : Int32, expand : Bool, optimize : Bool)
-        travel =TravelPlans.find!(id)
-
-        if expand || optimize
-            json = {
-                id: id,
-                travel_stops:  @api_service.get_data(travel.travel_stops, expand, optimize)
-            }
-            json
-        else
-            travel
+        travel =TravelPlans.find(id)
+        if travel
+            if expand || optimize
+                json = {
+                    id: id,
+                    travel_stops:  @api_service.get_data(travel.travel_stops, expand, optimize)
+                }
+                json
+            else
+                travel
+            end
         end
     end
 
