@@ -15,7 +15,7 @@ class RickNMortyApiService
         response = HTTP::Client.post(@url, headers: @headers, body: query)
         data = ResponseData.from_json(JSON.parse(response.body))
         if data
-            ResponseData.get_data(data, false, true).to_s
+            ResponseData.get_data(data, expand, optimize)
         else
           "Erro na requisição"
         end

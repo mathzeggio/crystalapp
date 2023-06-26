@@ -28,7 +28,7 @@ class ResponseData
   def self.expand(data_array : Array(NamedTuple))
     expandedArray = data_array.map do |object|
       newObject = {
-        id: object["id"],
+        id: object["id"].to_i,
         name: object["name"],
         dimension: object["dimension"],
         type: object["type"]

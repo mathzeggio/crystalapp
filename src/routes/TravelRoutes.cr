@@ -4,13 +4,21 @@ require "../services/*"
 travel_plans_service = TravelPlanService.new
 
 get "/travel-plans/:id" do |env|
+
+  expand_header = env.request.headers["expand"]?
+  expand = expand_header.nil? ? false : true
+  optimize_header = env.request.headers["optimize"]?
+  optimize = optimize_header.nil? ? false : true
+
   env.response.content_type = "application/json"
-  travel_plans_service.get_travel(env.params.url["id"].to_i.to_i32).to_json
+  travel_plans_service.get_travel(env.params.url["id"].to_i.to_i32, expand, optimize).to_json
 end
 
 get "/travel-plans" do |env|
-  expand = env.request.headers["expand"].to_s.downcase == "true"
-  optimize = env.request.headers["optimize"].to_s.downcase == "true"
+  expand_header = env.request.headers["expand"]?
+  expand = expand_header.nil? ? false : true
+  optimize_header = env.request.headers["optimize"]?
+  optimize = optimize_header.nil? ? false : true
 
   travel_plans = travel_plans_service.get_travels(expand, optimize).to_json
   env.response.content_type = "application/json"

@@ -1,24 +1,50 @@
 require "jennifer"
 require "../models/*"
 
-class TravelPlanService
 
-    def create_travel(stops : Array(Int32)) #: TravelPlans
+class TravelPlanService
+    def initialize()
+        @api_service = RickNMortyApiService.new
+    end
+
+    def create_travel(stops : Array(Int32))
         travel_plan = TravelPlans.new({travel_stops: stops}, true)
         travel_plan.save
         TravelPlans.to_object(travel_plan)
     end
 
-    def get_travel(id : Int32)
-        TravelPlans.find!(id)
+    def get_travel(id : Int32, expand : Bool, optimize : Bool)
+        travel =TravelPlans.find!(id)
+
+        if expand || optimize
+            json = {
+                id: id,
+                travel_stops:  @api_service.get_data(travel.travel_stops, expand, optimize)
+            }
+            json
+        else
+            travel
+        end
     end
 
     def get_travels(expand : Bool, optimize : Bool)
-        TravelPlans.all
+        travels = TravelPlans.all()
+        if expand || optimize
+            travels = Array(JSON::Any).from_json(travels.to_json).map do |travel| 
+                json = {
+                    id: travel["id"],
+                    travel_stops:  @api_service.get_data(Array(Int32).from_json(travel["travel_stops"].to_json), expand, optimize)
+                }
+                json
+            end 
+        else
+            travels
+        end
+
     end
 
     def update_travel(id : Int32, stops : Array(Int32))
-        travel = get_travel(id)
+        travel = TravelPlans.find!(id)
         if travel
             travel.travel_stops = stops
             travel.save
